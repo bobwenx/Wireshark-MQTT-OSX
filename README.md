@@ -10,9 +10,9 @@ Usage
 =====
 * install wireshark and lua on os x with homebrew:
 ```
-  brew install wireshark lua --with-qt5
+  brew install --build-from-source --with-qt5 wireshark lua
 ```
-* copy mqtt.lua to ~/.wireshark/plugins/mqtt.lua
+* copy [mqtt.lua](https://github.com/bobwenx/Wireshark-MQTT/blob/master/mqtt.lua) to ~/.wireshark/plugins/mqtt.lua
 * using wireshark to capturing packets and filter MQTT by using keyword mqtt3
 ![Wireshark](wireshark-with-mqtt3.png)
 

@@ -13,8 +13,8 @@ Usage
   brew install wireshark lua --with-qt5
 ```
 * copy mqtt.lua to ~/.wireshark/plugins/mqtt.lua
-* using wireshark to capturing packets and using keyword mqtt3 to filter
-![Wireshark](http://www.dropbox.com/s/7ylnrsxts7nyhab/wireshark-with-mqtt3.png)
+* using wireshark to capturing packets and filter MQTT by using keyword mqtt3
+![Wireshark](wireshark-with-mqtt3.png)
 
 Others Information 
 =======

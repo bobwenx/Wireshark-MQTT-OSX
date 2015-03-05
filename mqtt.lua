@@ -18,49 +18,56 @@
 
 do
 	-- Create a new dissector
-	MQTTPROTO = Proto("MQTT", "MQ Telemetry Transport")
-	local bitw = require("bit")
+	-- register to MQTT3(keyword mqtt3) to avoid conflict with wireshark(1.12.0+)'s MQTT Display Filter
+	-- see https://www.wireshark.org/docs/dfref/m/mqtt.html for detail.
+	MQTTPROTO = Proto("MQTT3", "MQ Telemetry Transport")
+	-- the bitlib library(http://luaforge.net/projects/bitlib/) do not work on lua 5.2+
+	-- local bitw = require("bit")
+
+	-- using lua 5.2 bitwise library: bit32
+	local bitw = require("bit32")
 	local f = MQTTPROTO.fields
+
 	-- Fix header: byte 1
-	f.message_type = ProtoField.uint8("mqtt.message_type", "Message Type", base.HEX, nil, 0xF0)
-	f.dup = ProtoField.uint8("mqtt.dup", "DUP Flag", base.DEC, nil, 0x08)
-	f.qos = ProtoField.uint8("mqtt.qos", "QoS Level", base.DEC, nil, 0x06)
-	f.retain = ProtoField.uint8("mqtt.retain", "Retain", base.DEC, nil, 0x01)
+	f.message_type = ProtoField.uint8("mqtt3.message_type", "Message Type", base.HEX, nil, 0xF0)
+	f.dup = ProtoField.uint8("mqtt3.dup", "DUP Flag", base.DEC, nil, 0x08)
+	f.qos = ProtoField.uint8("mqtt3.qos", "QoS Level", base.DEC, nil, 0x06)
+	f.retain = ProtoField.uint8("mqtt3.retain", "Retain", base.DEC, nil, 0x01)
 	-- Fix header: byte 2
-	f.remain_length = ProtoField.uint8("mqtt.remain_length", "Remain Length")
+	f.remain_length = ProtoField.uint8("mqtt3.remain_length", "Remain Length")
 
 	-- Connect
-	f.connect_protocol_name = ProtoField.string("mqtt.connect.protocol_name", "Protocol Name")
-	f.connect_protocol_version = ProtoField.uint8("mqtt.connect.protocol_version", "Protocol Version")
-	f.connect_username = ProtoField.uint8("mqtt.connect.username", "Username Flag", base.DEC, nil, 0x80)
-	f.connect_password = ProtoField.uint8("mqtt.connect.password", "Password Flag", base.DEC, nil, 0x40)
-	f.connect_will_retain = ProtoField.uint8("mqtt.connect.will_retain", "Will Retain Flag", base.DEC, nil, 0x20)
-	f.connect_will_qos = ProtoField.uint8("mqtt.connect.will_qos", "Will QoS Flag", base.DEC, nil, 0x18)
-	f.connect_will = ProtoField.uint8("mqtt.connect.will", "Will Flag", base.DEC, nil, 0x04)
-	f.connect_clean_session = ProtoField.uint8("mqtt.connect.clean_session", "Clean Session Flag", base.DEC, nil, 0x02)
-	f.connect_keep_alive = ProtoField.uint16("mqtt.connect.keep_alive", "Keep Alive (secs)")
-	f.connect_payload_clientid = ProtoField.string("mqtt.connect.payload.clientid", "Client ID")
-	f.connect_payload_username = ProtoField.string("mqtt.connect.payload.username", "Username")
-	f.connect_payload_password = ProtoField.string("mqtt.connect.payload.password", "Password")
+	f.connect_protocol_name = ProtoField.string("mqtt3.connect.protocol_name", "Protocol Name")
+	f.connect_protocol_version = ProtoField.uint8("mqtt3.connect.protocol_version", "Protocol Version")
+	f.connect_username = ProtoField.uint8("mqtt3.connect.username", "Username Flag", base.DEC, nil, 0x80)
+	f.connect_password = ProtoField.uint8("mqtt3.connect.password", "Password Flag", base.DEC, nil, 0x40)
+	f.connect_will_retain = ProtoField.uint8("mqtt3.connect.will_retain", "Will Retain Flag", base.DEC, nil, 0x20)
+	f.connect_will_qos = ProtoField.uint8("mqtt3.connect.will_qos", "Will QoS Flag", base.DEC, nil, 0x18)
+	f.connect_will = ProtoField.uint8("mqtt3.connect.will", "Will Flag", base.DEC, nil, 0x04)
+	f.connect_clean_session = ProtoField.uint8("mqtt3.connect.clean_session", "Clean Session Flag", base.DEC, nil, 0x02)
+	f.connect_keep_alive = ProtoField.uint16("mqtt3.connect.keep_alive", "Keep Alive (secs)")
+	f.connect_payload_clientid = ProtoField.string("mqtt3.connect.payload.clientid", "Client ID")
+	f.connect_payload_username = ProtoField.string("mqtt3.connect.payload.username", "Username")
+	f.connect_payload_password = ProtoField.string("mqtt3.connect.payload.password", "Password")
 
 	-- Publish
-	f.publish_topic = ProtoField.string("mqtt.publish.topic", "Topic")
-	f.publish_message_id = ProtoField.uint16("mqtt.publish.message_id", "Message ID")
-	f.publish_data = ProtoField.string("mqtt.publish.data", "Data")
+	f.publish_topic = ProtoField.string("mqtt3.publish.topic", "Topic")
+	f.publish_message_id = ProtoField.uint16("mqtt3.publish.message_id", "Message ID")
+	f.publish_data = ProtoField.string("mqtt3.publish.data", "Data")
 
 	-- Subscribe
-	f.subscribe_message_id = ProtoField.uint16("mqtt.subscribe.message_id", "Message ID")
-	f.subscribe_topic = ProtoField.string("mqtt.subscribe.topic", "Topic")
-	f.subscribe_qos = ProtoField.uint8("mqtt.subscribe.qos", "QoS")
+	f.subscribe_message_id = ProtoField.uint16("mqtt3.subscribe.message_id", "Message ID")
+	f.subscribe_topic = ProtoField.string("mqtt3.subscribe.topic", "Topic")
+	f.subscribe_qos = ProtoField.uint8("mqtt3.subscribe.qos", "QoS")
 
 	-- SubAck
-	f.suback_qos = ProtoField.uint8("mqtt.suback.qos", "QoS")
+	f.suback_qos = ProtoField.uint8("mqtt3.suback.qos", "QoS")
 
 	-- Suback
-	f.suback_message_id = ProtoField.uint16("mqtt.suback.message_id", "Message ID")
-	f.suback_qos = ProtoField.uint8("mqtt.suback.qos", "QoS")
+	f.suback_message_id = ProtoField.uint16("mqtt3.suback.message_id", "Message ID")
+	f.suback_qos = ProtoField.uint8("mqtt3.suback.qos", "QoS")
 	--
-	f.payload_data = ProtoField.bytes("mqtt.payload", "Payload Data")
+	f.payload_data = ProtoField.bytes("mqtt3.payload", "Payload Data")
 
 	-- decoding of fixed header remaining length
 	-- according to MQTT V3.1

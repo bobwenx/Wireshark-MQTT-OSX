@@ -8,7 +8,7 @@ This fork add wireshark 1.12+ & lua 5.2 support on OS x(10.10).
 
 Usage
 =====
-* install wireshark and lua on os x with homebrew:
+* install wireshark(1.12) and lua(5.2) on os x(10.10+) via homebrew:
 ```
   brew install --build-from-source --with-qt5 wireshark lua
 ```

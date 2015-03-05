@@ -1,22 +1,21 @@
-### Wireshark-MQTT
+Wireshark-MQTT
+===========================
 
 MQTT dissector for Wireshark was developed for debugging
 libemqtt (https://github.com/menudoproblema/libemqtt)
 
-this fork add wireshark 1.12+ & lua 5.2 support on OS x(10.10).
+This fork add wireshark 1.12+ & lua 5.2 support on OS x(10.10).
 
 Usage
 =====
+* install wireshark and lua on os x with homebrew:
+```
+  brew install wireshark lua --with-qt5
+```
+* copy mqtt.lua to ~/.wireshark/plugins/mqtt.lua
+* using wireshark to capturing packets and using keyword mqtt3 to filter
+![Wireshark capturing mqtt packets](http://www.dropbox.com/s/7ylnrsxts7nyhab/wireshark-with-mqtt3.png?dl=0)
 
-### install wireshark on os x with homebrew:
-brew install wireshark --with-qt5
-
-$ wireshark -X lua_script:mqtt.lua
-
-If you want to install this as a plugin just copy the mqtt.lua to 
-a wireshark plugin folder.
-In windows this could be %APPDATA%\Wireshark\plugins
-
-
-Others Setting same as originally library(https://github.com/menudoproblema/Wireshark-MQTT)
+Others Information 
 =======
+Same as originally library(https://github.com/menudoproblema/Wireshark-MQTT)
